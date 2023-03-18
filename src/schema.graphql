@@ -1,0 +1,33 @@
+type Product {
+    productId: ID
+    productName: String
+    productPrice: Int
+}
+
+enum ProductTypes {
+    PAINTING
+    CHAIR
+    TABLE 
+    ....
+}
+
+type ShoppingCart {
+    cartId: ID
+    cartName: String
+    totalPrice: Int
+}
+
+type ShoppingCartItem {
+    productName: String
+    productPrice: Int
+    productAmount: Int
+}
+
+
+type Query {
+    getProductById(productId: ID!): Product
+}
+
+type Mutation {
+
+}
