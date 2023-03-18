@@ -1,35 +1,54 @@
 type Product {
-    productId: ID
-    productName: ProductTypes
-    productPrice: Int
+  productId: ID
+  productName: ProductTypes
+  productPrice: Int
 }
 
 enum ProductTypes {
-    MUG
-    PLATE
-    TEAPOT
-    BOWL
-    MILK_JUG
-    SUGAR_POT
+  MUG
+  PLATE
+  TEAPOT
+  BOWL
+  MILK_JUG
+  SUGAR_POT
 }
 
 type ShoppingCart {
-    cartId: ID
-    cartName: String
-    totalPrice: Int
+  cartId: ID
+  cartName: String
+  totalPrice: Int
 }
 
 type ShoppingCartItem {
-    productName: String
-    productPrice: Int
-    productAmount: Int
+  productName: String
+  productPrice: Int
+  productAmount: Int
 }
 
+type DeletedShoppingCart {
+  deletedId: ID
+  sucess: Boolean
+}
+
+input addProduct {
+  productId: ID!
+  cartId: ID!
+}
+
+input removeProduct {
+  productId: ID!
+  cartId: ID!
+}
 
 type Query {
-    getProductById(productId: ID!): Product
+  getProductById(productId: ID!): Product
+  getCartById(cartId: ID!): ShoppingCart
 }
 
 type Mutation {
+  createShoppingCart: ShoppingCart
+  deleteShoppingCart(cartId: ID!): DeletedShoppingCart
 
+  addProduct(input: addProduct!): ShoppingCart
+  removeProduct(input: removeProduct!): ShoppingCart
 }
