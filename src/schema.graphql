@@ -1,14 +1,16 @@
 type Product {
     productId: ID
-    productName: String
+    productName: ProductTypes
     productPrice: Int
 }
 
 enum ProductTypes {
-    PAINTING
-    CHAIR
-    TABLE 
-    ....
+    MUG
+    PLATE
+    TEAPOT
+    BOWL
+    MILK_JUG
+    SUGAR_POT
 }
 
 type ShoppingCart {

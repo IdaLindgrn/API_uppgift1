@@ -8,7 +8,7 @@ const path = require("path");
 
 async function run() {
     try {
-        const typeDefs = await loadFiles(path.join(_dirname, "schema.graphql"));
+        const typeDefs = await loadFiles(path.join(__dirname, "schema.graphql"));
         const schema = makeExecutableSchema({
             typeDefs: typeDefs,
             resolvers: resolvers,
