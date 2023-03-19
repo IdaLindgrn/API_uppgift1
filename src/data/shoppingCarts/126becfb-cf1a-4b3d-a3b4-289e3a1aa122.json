@@ -1,0 +1,21 @@
+{
+    "cartId": "126becfb-cf1a-4b3d-a3b4-289e3a1aa122",
+    "products": [
+        {
+            "productId": "6edb092a-c587-11ed-afa1-0242ac120002",
+            "productName": "MUG",
+            "productPrice": 120
+        },
+        {
+            "productId": "88936fd8-c587-11ed-afa1-0242ac120002",
+            "productName": "MILK_JUG",
+            "productPrice": 80
+        },
+        {
+            "productId": "9048bcb0-c587-11ed-afa1-0242ac120002",
+            "productName": "BOWL",
+            "productPrice": 130
+        }
+    ],
+    "totalPrice": 330
+}

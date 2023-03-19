@@ -15,7 +15,7 @@ enum ProductTypes {
 
 type ShoppingCart {
   cartId: ID
-  cartName: String
+  products: [Product]
   totalPrice: Int
 }
 
