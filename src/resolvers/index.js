@@ -90,7 +90,7 @@ exports.resolvers = {
             }
         },
         addProduct: async (_, args) => {
-            const { cartId, productId } = args.input;
+            const { cartId, productId } = args;
             const productFilePath = path.join(productDirectory, `${productId}.json`);
             const productExists = await fileExists(productFilePath);
             
@@ -98,8 +98,6 @@ exports.resolvers = {
                 return new GraphQLError("That product does not exist 😢")
 
                 const productInfo = await readJsonFile(productFilePath);
-
-            
 
                 const product = JSON.parse(
                     await fsPromises.readFile(productFilePath, {
@@ -122,7 +120,7 @@ exports.resolvers = {
 
             let sum = 0;
             for (let i= 0; i < cart.products.length; i++) {
-                sum += cart.products[i] 
+                sum += cart.products[i].productPrice;
                 // något blabla
             }
             cart.totalPrice = sum;

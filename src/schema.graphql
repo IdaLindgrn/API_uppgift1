@@ -27,17 +27,7 @@ type ShoppingCartItem {
 
 type DeletedShoppingCart {
   deletedId: ID
-  sucess: Boolean
-}
-
-input addProduct {
-  productId: ID!
-  cartId: ID!
-}
-
-input removeProduct {
-  productId: ID!
-  cartId: ID!
+  success: Boolean
 }
 
 type Query {
@@ -49,6 +39,6 @@ type Mutation {
   createShoppingCart: ShoppingCart
   deleteShoppingCart(cartId: ID!): DeletedShoppingCart
 
-  addProduct(input: addProduct!): ShoppingCart
-  removeProduct(input: removeProduct!): ShoppingCart
+  addProduct(cartId: ID!, productId: ID!): ShoppingCart
+  removeProduct(cartId: ID!, productId: ID!): ShoppingCart
 }
