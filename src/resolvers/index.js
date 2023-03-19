@@ -97,8 +97,6 @@ exports.resolvers = {
             if (!productExists) 
                 return new GraphQLError("That product does not exist 😢")
 
-                const productInfo = await readJsonFile(productFilePath);
-
                 const product = JSON.parse(
                     await fsPromises.readFile(productFilePath, {
                         encoding: "utf-8",
