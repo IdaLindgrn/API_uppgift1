@@ -121,7 +121,6 @@ exports.resolvers = {
             let sum = 0;
             for (let i= 0; i < cart.products.length; i++) {
                 sum += cart.products[i].productPrice;
-                // något blabla
             }
             cart.totalPrice = sum;
 
