@@ -19,12 +19,6 @@ type ShoppingCart {
   totalPrice: Int
 }
 
-type ShoppingCartItem {
-  productName: String
-  productPrice: Int
-  productAmount: Int
-}
-
 type DeletedShoppingCart {
   deletedId: ID
   success: Boolean
@@ -38,7 +32,6 @@ type Query {
 type Mutation {
   createShoppingCart: ShoppingCart
   deleteShoppingCart(cartId: ID!): DeletedShoppingCart
-
-  addProduct(cartId: ID!, productId: ID!): ShoppingCart
-  removeProduct(cartId: ID!, productId: ID!): ShoppingCart
+  addProductToCart(cartId: ID!, productId: ID!): ShoppingCart
+  removeProductFromCart(cartId: ID!, productId: ID!): ShoppingCart
 }

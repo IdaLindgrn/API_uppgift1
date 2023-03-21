@@ -89,7 +89,7 @@ exports.resolvers = {
                 success: true,
             }
         },
-        addProduct: async (_, args) => {
+        addProductToCart: async (_, args) => {
             const { cartId, productId } = args;
             const productFilePath = path.join(productDirectory, `${productId}.json`);
             const productExists = await fileExists(productFilePath);
@@ -127,46 +127,57 @@ exports.resolvers = {
             return cart;
             }
         },
-        removeProduct: async (_, args) => {
+        removeProductFromCart: async (_, args) => {
+            
+            console.log("hej1");
+            
             const { cartId, productId } = args;
+            const productFilePath = path.join(productDirectory, `${productId}.json`)
+            const productExists = await fileExists(productFilePath)
+          
 
-            const cartFilePath = path.join(cartDirectory, `${cartId}.json`);
-            const cartExists = await fileExists(cartFilePath);
+            const cartFilePath = path.join(cartDirectory, `${cartId}.json`)
+            const cartExists = await fileExists(cartFilePath)
 
-            if (!cartExists)
-                    return new GraphQLError(`A shopping cart with ID ${cartId} does not exist 😢`)
-            else {
-                let cart = JSON.parse(
-                    await fsPromises.readFile(cartFilePath, {
-                        encoding: "utf-8",
-                    })
-                );
+            if(!cartExists) {
+            return new GraphQLError(`A shopping cart with ID ${cartId} does not exist 😢`)
+            }
 
-            let products = cart.product;
+            if(!productExists) {
+                    return new GraphQLError(`A product with ID ${productId} does not exist 😢`)
+            }
 
-            let totalAmount = cart.totalAmount;
-            for(let i = 0; i < cart.products.length; i++) {
-                if(productId === cart.products[i].productId){
-                    cart.products.splice(i, 1);
+            try {
+                console.log("hej2");
+               const cartData = await fsPromises.readFile(cartFilePath, {
+                encoding: "utf-8",
+               });
+
+            let cart = JSON.parse(cartData);
+
+            const cartId = cart.cartId;
+            const products = cart.products;
+            let totalPrice = cart.totalPrice;
+
+            for (let i = 0; i < products.length; i++) {
+                console.log("for");
+                if (products[i].productId === productId) {
+                    console.log("if");
+                    products.splice(i, 1);
                 }
             }
 
-            sum = 0;
-            for (let i= 0; i < products.length; i++) {
-                sum += products[i].productPrice;
-            }
-            const cartId = cartId;
-            const removedProduct = {
-                cartId,
-                products,
-                totalAmount
+            totalPrice = 0;
+            for (let i = 0; i < products.length; i++) {
+                totalPrice += products[i].productPrice;
             }
 
-            console.log(products)
+            const deletedProduct = { cartId, products, totalPrice };
+            await fsPromises.writeFile(cartFilePath, JSON.stringify(deletedProduct));
+            return deletedProduct;
 
-            await fsPromises.writeFile(cartFilePath, JSON.stringify(cart));
-
-            return removedProduct;
+            } catch (error) {
+                return new GraphQLError("The shopping cart could not be updated")
             }
          }
      }

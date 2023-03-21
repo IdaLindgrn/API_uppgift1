@@ -7,4 +7,4 @@ exports.ProductTypesEnum = {
     SUGAR_POT: "SUGAR_POT"
 };
 
-//används ej
+//används ej 
