@@ -8,7 +8,7 @@ const {
     deleteFile,
 } = require("../utils/fileHandling");
 
-const { ProductTypesEnum } = require("../enums/enums");
+// const { ProductTypesEnum } = require("../enums/enums");  
 const productDirectory = path.join(__dirname, "../data/products");
 const cartDirectory = path.join(__dirname, "../data/shoppingCarts");
 
@@ -95,7 +95,7 @@ exports.resolvers = {
             const productExists = await fileExists(productFilePath);
             
             if (!productExists) 
-                return new GraphQLError("That product does not exist 😢")
+                return new GraphQLError(`A product with ID ${productId} does not exist 😢`)
 
                 const product = JSON.parse(
                     await fsPromises.readFile(productFilePath, {
@@ -106,7 +106,7 @@ exports.resolvers = {
             const cartFilePath = path.join(cartDirectory, `${cartId}.json`);
             const cartExists = await fileExists(cartFilePath);
             if (!cartExists)
-                    return new GraphQLError("That shopping cart does not exist 😢")
+                    return new GraphQLError(`A shopping cart with ID ${cartId} does not exist 😢`)
             else {
                 const cart = JSON.parse(
                     await fsPromises.readFile(cartFilePath, {
@@ -128,53 +128,47 @@ exports.resolvers = {
             }
         },
         removeProduct: async (_, args) => {
+            const { cartId, productId } = args;
 
-            const { cartId} = args.input;
+            const cartFilePath = path.join(cartDirectory, `${cartId}.json`);
+            const cartExists = await fileExists(cartFilePath);
 
-            const product = await args.Product.findById(productId);
+            if (!cartExists)
+                    return new GraphQLError(`A shopping cart with ID ${cartId} does not exist 😢`)
+            else {
+                let cart = JSON.parse(
+                    await fsPromises.readFile(cartFilePath, {
+                        encoding: "utf-8",
+                    })
+                );
 
-            if (!product) {
-                throw new GraphQLError("Product not found")
+            let products = cart.product;
+
+            let totalAmount = cart.totalAmount;
+            for(let i = 0; i < cart.products.length; i++) {
+                if(productId === cart.products[i].productId){
+                    cart.products.splice(i, 1);
+                }
             }
 
-            await product.remove();
-
-            return {
-                message: `Product with ID ${productId} successfully deleted`
+            sum = 0;
+            for (let i= 0; i < products.length; i++) {
+                sum += products[i].productPrice;
+            }
+            const cartId = cartId;
+            const removedProduct = {
+                cartId,
+                products,
+                totalAmount
             }
 
-    //         const cartFilePath = path.join( cartDirectory, `${cartId}.json`)
+            console.log(products)
 
-    //         const cartExists = await fileExists(cartFilePath);
-    //         if (!cartExists) {
-    //             return new GraphQLError("That shopping cart does not exist 😢")
-    //         }
+            await fsPromises.writeFile(cartFilePath, JSON.stringify(cart));
 
-    //         const cart = await fsPromises.readFile(cartFilePath, {
-    //             encoding: "utf-8",
-    //         });
-    //         const cartData = JSON.parse(cart);
-            
-    //         let products = cartData.product;
+            return removedProduct;
+            }
+         }
+     }
+   }
 
-    //         for (let i = 0; i < products[i].Cart) {
-    //             if (products === products[i].Cart) {
-    //             products.splice(i, 1);
-    //             break;
-    //         } 
-    //         else {
-    //             return new GraphQLError("That shopping cart does not exist 😢");
-    //         }
-    //     }
-
-    //     let price = 0;
-    //     for (let i = 0; i < products.length; i++) {
-    //         price += products[i].productPrice;
-    //     }
-            
-    //     }
-//     }
-// }
-        }
-    }
-}

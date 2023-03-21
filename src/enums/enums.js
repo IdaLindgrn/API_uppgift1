@@ -6,3 +6,5 @@ exports.ProductTypesEnum = {
     MILK_JUG: "MILK_JUG",
     SUGAR_POT: "SUGAR_POT"
 };
+
+//används ej
